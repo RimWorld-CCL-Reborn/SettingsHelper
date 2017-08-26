@@ -2,7 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace ModWindowHelper
+namespace ModSettingsHelper
 {
     // reference: https://github.com/erdelf/GodsOfRimworld/blob/master/Source/Ankh/ModControl.cs
     // reference: https://github.com/erdelf/PrisonerRansom/
