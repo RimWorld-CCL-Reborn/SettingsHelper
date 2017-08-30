@@ -11,6 +11,7 @@ namespace ModSettingsHelper
         static float topPad = 30f;
         static float leftPad = 0f;
         static float vspacing = 30f; // same as radioListItemHeight
+        static float textFieldPadding = 10f; // same as radioListItemHeight
         static float curY = topPad;
         static float curX = leftPad;
 
@@ -24,6 +25,22 @@ namespace ModSettingsHelper
         static public void MakeLabel(Rect inRect, string label)
         {
             MakeLabel(inRect.width - 64f, label);
+        }
+
+        static public void MakeLabeledTextField(Rect inRect, string label, ref string val)
+        {
+            curY += textFieldPadding;
+            Widgets.Label(new Rect(0f, curY + 5f, inRect.width - 16f, 40f), label);
+            val = Widgets.TextField(new Rect(50f, curY + 6f, inRect.width - 16f, 40f), val);
+            curY += vspacing + textFieldPadding;
+        }
+
+        // TODO: rewrite this -> it's ugly.
+        static public void MakeTextFieldNumericLabeled<T>(Rect inRect, string label, ref T val, ref string buffer, float min, float max) where T : struct
+        {
+            curY += textFieldPadding;
+            Widgets.TextFieldNumericLabeled<T>(new Rect(0f, curY + 5f, inRect.width - 16f, 40f), label, ref val, ref buffer, min, max);
+            curY += vspacing + textFieldPadding;
         }
 
         static private void MakeLabel(float width, string label)
@@ -57,6 +74,23 @@ namespace ModSettingsHelper
                     val = item.Value;
                 }
             }
+            curY += vspacing;
+        }
+
+        // NOTE: consider using an enum...
+        static public void MakeLabeledRadioList(Rect inRect, string[] labels, ref string val)
+        {
+            MakeLabeledRadioList<string>(inRect, GenerateLabeledRadioValues(labels), ref val);
+        }
+
+        static public List<LabeledRadioValue<string>> GenerateLabeledRadioValues(string[] labels)
+        {
+            List<LabeledRadioValue<string>> list = new List<LabeledRadioValue<string>>();
+            foreach (string label in labels)
+            {
+                list.Add(new LabeledRadioValue<string>(label, label));
+            }
+            return list;
         }
 
         static public void MakeLabeledRadioList<T>(Rect inRect, Dictionary<string, T> dict, ref T val)
