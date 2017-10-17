@@ -51,8 +51,6 @@ namespace SettingsHelper
             Rect lineRect = listing_Standard.LineRectSpilter(out leftHalf, height);
 
             rightHalf = lineRect.RightHalf().Rounded();
-            // TODO: What the?
-            rightHalf = rightHalf.LeftPartPixels(rightHalf.width - Text.LineHeight);
 
             return lineRect;
         }
