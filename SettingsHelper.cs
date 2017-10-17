@@ -1,5 +1,6 @@
 ﻿using Verse;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace SettingsHelper
 {
@@ -30,10 +31,7 @@ namespace SettingsHelper
             //Widgets.DrawHighlightIfMouseover(lineRect);
             //TooltipHandler.TipRegion(lineRect, "TODO: TIP GOES HERE");
 
-            TextAnchor anchor = Text.Anchor;
-            Text.Anchor = TextAnchor.MiddleLeft;
             Widgets.Label(lineRect, label);
-            Text.Anchor = anchor;
         }
 
         private static Rect GetRect(this Listing_Standard listing_Standard,  float? height = null)
@@ -59,7 +57,70 @@ namespace SettingsHelper
             return lineRect;
         }
 
-        public static void AddSettingsLine<T>(this Listing_Standard listing_Standard, string label, ref T settingsValue) where T : struct
+        public static void AddLabeledRadioList(this Listing_Standard listing_Standard, string header, string[] labels, ref string val, float? headerHeight = null)
+        {
+            listing_Standard.Gap(Gap);
+            listing_Standard.AddLabelLine(header, headerHeight);
+            listing_Standard.AddRadioList<string>(GenerateLabeledRadioValues(labels), ref val);
+        }
+
+        private static void AddRadioList<T>(this Listing_Standard listing_Standard, List<LabeledRadioValue<T>> items, ref T val, float? height = null)
+        {
+            foreach (LabeledRadioValue<T> item in items)
+            {
+                listing_Standard.Gap(Gap);
+                Rect lineRect = listing_Standard.GetRect(height);
+                if (Widgets.RadioButtonLabeled(lineRect, item.Label, EqualityComparer<T>.Default.Equals(item.Value, val)))
+                    val = item.Value;
+            }
+        }
+
+        private static List<LabeledRadioValue<string>> GenerateLabeledRadioValues(string[] labels)
+        {
+            List<LabeledRadioValue<string>> list = new List<LabeledRadioValue<string>>();
+            foreach (string label in labels)
+            {
+                list.Add(new LabeledRadioValue<string>(label, label));
+            }
+            return list;
+        }
+
+        // (label, value) => (key, value)
+        /*private static List<LabeledRadioValue<T>> GenerateLabeledRadioValues<T>(Dictionary<string, T> dict)
+        {
+            List<LabeledRadioValue<T>> list = new List<LabeledRadioValue<T>>();
+            foreach (KeyValuePair<string, T> entry in dict)
+            {
+                list.Add(new LabeledRadioValue<T>(entry.Key, entry.Value));
+            }
+            return list;
+        }*/
+
+        public class LabeledRadioValue<T>
+        {
+            private string label;
+            private T val;
+
+            public LabeledRadioValue(string label, T val)
+            {
+                Label = label;
+                Value = val;
+            }
+
+            public string Label
+            {
+                get { return label; }
+                set { label = value; }
+            }
+
+            public T Value
+            {
+                get { return val; }
+                set { val = value; }
+            }
+        }
+
+        public static void AddLabeledTextField(this Listing_Standard listing_Standard, string label, ref string settingsValue)
         {
             listing_Standard.Gap(Gap);
             listing_Standard.LineRectSpilter(out Rect leftHalf, out Rect rightHalf);
@@ -68,10 +129,22 @@ namespace SettingsHelper
             //Widgets.DrawHighlightIfMouseover(lineRect);
             //TooltipHandler.TipRegion(lineRect, "TODO: TIP GOES HERE");
 
-            TextAnchor anchor = Text.Anchor;
-            Text.Anchor = TextAnchor.MiddleLeft;
             Widgets.Label(leftHalf, label);
-            Text.Anchor = anchor;
+
+            string buffer = settingsValue.ToString();
+            settingsValue = Widgets.TextField(rightHalf, buffer);
+        }
+
+        public static void AddLabeledNumericalTextField<T>(this Listing_Standard listing_Standard, string label, ref T settingsValue) where T : struct
+        {
+            listing_Standard.Gap(Gap);
+            listing_Standard.LineRectSpilter(out Rect leftHalf, out Rect rightHalf);
+
+            // TODO: tooltips
+            //Widgets.DrawHighlightIfMouseover(lineRect);
+            //TooltipHandler.TipRegion(lineRect, "TODO: TIP GOES HERE");
+
+            Widgets.Label(leftHalf, label);
 
             string buffer = settingsValue.ToString();
             Widgets.TextFieldNumeric<T>(rightHalf, ref settingsValue, ref buffer, 1f, 100000f);
@@ -80,10 +153,7 @@ namespace SettingsHelper
         public static void AddLabeledCheckbox(this Listing_Standard listing_Standard, string label, ref bool settingsValue)
         {
             listing_Standard.Gap(Gap);
-            TextAnchor anchor = Text.Anchor;
-            Text.Anchor = TextAnchor.MiddleLeft;
             listing_Standard.CheckboxLabeled(label, ref settingsValue);
-            Text.Anchor = anchor;
         }
 
         public static void AddLabeledSlider(this Listing_Standard listing_Standard, string label, ref float value, float leftValue, float rightValue)
@@ -91,10 +161,7 @@ namespace SettingsHelper
             listing_Standard.Gap(Gap);
             listing_Standard.LineRectSpilter(out Rect leftHalf, out Rect rightHalf);
 
-            TextAnchor anchor = Text.Anchor;
-            Text.Anchor = TextAnchor.MiddleLeft;
             Widgets.Label(leftHalf, label);
-            Text.Anchor = anchor;
 
             float bufferVal = value;
             // NOTE: this BottomPart will probably need some reworking if the height of rect is greater than a line
