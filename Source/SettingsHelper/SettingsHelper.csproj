@@ -47,6 +47,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColorPicker\ColorPresets.cs" />
+    <Compile Include="ColorPicker\ColorSelectDialog.cs" />
+    <Compile Include="ColorPicker\IOUtil.cs" />
+    <Compile Include="ColorPicker\SelectionColorWidget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsHelper.cs" />
   </ItemGroup>
