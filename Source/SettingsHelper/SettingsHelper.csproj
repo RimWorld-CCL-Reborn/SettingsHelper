@@ -54,5 +54,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsHelper.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ColorPicker\colorpicker.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

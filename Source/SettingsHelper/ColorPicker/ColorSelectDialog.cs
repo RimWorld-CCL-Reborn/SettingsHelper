@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.IO;
+using System.Reflection;
+using UnityEngine;
 using Verse;
 
 namespace ColorPicker.Dialog
@@ -15,6 +17,28 @@ namespace ColorPicker.Dialog
 
         private string label;
         private bool allowAlpha;
+
+        static ColorSelectDialog()
+        {
+            // REFERENCE: https://stackoverflow.com/questions/3314140/how-to-read-embedded-resource-text-file
+            // REFERENCE: https://stackoverflow.com/questions/7542059/most-efficient-way-of-reading-data-from-a-stream
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            string resourcePath = "SettingsHelper.ColorPicker.colorpicker.png";
+
+            Stream stream = assembly.GetManifestResourceStream(resourcePath);
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                byte[] buffer = new byte[2048]; // read in chunks of 2KB
+                int bytesRead;
+                while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+                    memoryStream.Write(buffer, 0, bytesRead);
+                byte[] result = memoryStream.ToArray();
+                // do something with the result
+                colorPickerTexture = new Texture2D(2, 2, TextureFormat.Alpha8, true);
+                ColorPickerTexture.LoadImage(result);
+            }
+
+        }
 
         public ColorSelectDialog(string label, Color color, SelectionChange selectionChange = null, bool allowAlpha = false) : base()
         {
