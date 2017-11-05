@@ -10,12 +10,12 @@ This helper is used to simplify working with settings GUIs. Extends `Listing_Sta
 - Utilities for splitting rectangles
 - Color picker utility for providing UI for picking a color (credits to KaimeV)
 
-# Improvements
+## Improvements
 - Need more/better default values, parameters
 - Color picker needs UI improvements
 - Radio boxes and other lists need more helpers
 
-# Notes
+## Notes
 - First version of this was ModWindowHelper which used it's own helper for keeping track of position in the UI.
 
 ## Acknowledgements
