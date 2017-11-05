@@ -51,11 +51,20 @@ namespace SettingsHelper
             return lineRect;
         }
 
+        // TODO: these could be simplified or better formalized...
+
         public static void AddLabeledRadioList(this Listing_Standard listing_Standard, string header, string[] labels, ref string val, float? headerHeight = null)
         {
             listing_Standard.Gap(Gap);
             listing_Standard.AddLabelLine(header, headerHeight);
             listing_Standard.AddRadioList<string>(GenerateLabeledRadioValues(labels), ref val);
+        }
+
+        public static void AddLabeledRadioList<T>(this Listing_Standard listing_Standard, string header, Dictionary<string, T> dict, ref T val, float? headerHeight = null)
+        {
+            listing_Standard.Gap(Gap);
+            listing_Standard.AddLabelLine(header, headerHeight);
+            listing_Standard.AddRadioList<T>(GenerateLabeledRadioValues<T>(dict), ref val);
         }
 
         private static void AddRadioList<T>(this Listing_Standard listing_Standard, List<LabeledRadioValue<T>> items, ref T val, float? height = null)
@@ -80,7 +89,7 @@ namespace SettingsHelper
         }
 
         // (label, value) => (key, value)
-        /*private static List<LabeledRadioValue<T>> GenerateLabeledRadioValues<T>(Dictionary<string, T> dict)
+        private static List<LabeledRadioValue<T>> GenerateLabeledRadioValues<T>(Dictionary<string, T> dict)
         {
             List<LabeledRadioValue<T>> list = new List<LabeledRadioValue<T>>();
             foreach (KeyValuePair<string, T> entry in dict)
@@ -88,7 +97,7 @@ namespace SettingsHelper
                 list.Add(new LabeledRadioValue<T>(entry.Key, entry.Value));
             }
             return list;
-        }*/
+        }
 
         public class LabeledRadioValue<T>
         {
