@@ -108,8 +108,12 @@ namespace ColorPicker.Dialog
                 rgbColor = selectionColorWidget.SelectedColor;
 
             GUI.BeginGroup(new Rect(0, colorPickerRect.height + 90f, width, 30f));
-            GUI.Label(new Rect(0f, 0f, 10f, 20f), "R");
-            string rText = GUI.TextField(new Rect(12f, 1f, 30f, 20f), ColorConvert(rgbColor.r), 3);
+            //GUI.Label(new Rect(0f, 0f, 10f, 20f), "R");
+            //string rText = GUI.TextField(new Rect(12f, 1f, 30f, 20f), ColorConvert(rgbColor.r), 3);
+
+            float rVal = rgbColor.r;
+            string buffer = ColorConvert(rgbColor.r);
+            Widgets.TextFieldNumericLabeled<float>(new Rect(12f, 1f, 30f, 20f), "R", ref rVal, ref buffer, 0f, 255f);
 
             GUI.Label(new Rect(52f, 0f, 10f, 20f), "G");
             string gText = GUI.TextField(new Rect(64f, 1f, 30f, 20f), ColorConvert(rgbColor.g), 3);
@@ -170,7 +174,9 @@ namespace ColorPicker.Dialog
 
             if (!skipRGB && presetsDto.HasSelected())
             {
-                Color c = new Color(ColorConvert(rText), ColorConvert(gText), ColorConvert(bText), 1);
+                Log.Message($"{rVal}");
+                Log.Message($"{buffer}");
+                Color c = new Color(rVal, ColorConvert(gText), ColorConvert(bText), 1);
                 if (allowAlpha)
                     c.a = ColorConvert(aText);
 
