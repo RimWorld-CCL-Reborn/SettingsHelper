@@ -1,4 +1,4 @@
-# SettingsHelper [![RimWorld Alpha 18](https://img.shields.io/badge/RimWorld-Alpha%2018-brightgreen.svg)](http://rimworldgame.com/)
+# SettingsHelper [![RimWorld Alpha 18](https://img.shields.io/badge/RimWorld-Alpha%2018-brightgreen.svg)](http://rimworldgame.com/) [![Wiki](https://img.shields.io/badge/documentation-Wiki-4BC51D.svg?style=flat)](https://github.com/RimWorld-CCL-Reborn/SettingsHelper/wiki)
 
 This helper is used to simplify working with settings GUIs. Extends `Listing_Standard` to have additional functionality.
 
