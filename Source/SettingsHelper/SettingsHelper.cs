@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Verse;
 using UnityEngine;
+using ColorPicker.Dialog;
 
 namespace SettingsHelper
 {
@@ -32,7 +33,7 @@ namespace SettingsHelper
             Widgets.Label(lineRect, label);
         }
 
-        public static Rect GetRect(this Listing_Standard listing_Standard,  float? height = null)
+        public static Rect GetRect(this Listing_Standard listing_Standard, float? height = null)
         {
             return listing_Standard.GetRect(height ?? Text.LineHeight);
         }
@@ -47,7 +48,7 @@ namespace SettingsHelper
         public static Rect LineRectSpilter(this Listing_Standard listing_Standard, out Rect leftHalf, out Rect rightHalf, float leftPartPct = 0.5f, float? height = null)
         {
             Rect lineRect = listing_Standard.LineRectSpilter(out leftHalf, leftPartPct, height);
-            rightHalf = lineRect.RightPart(1f-leftPartPct).Rounded();
+            rightHalf = lineRect.RightPart(1f - leftPartPct).Rounded();
             return lineRect;
         }
 
@@ -170,5 +171,28 @@ namespace SettingsHelper
             // NOTE: this BottomPart will probably need some reworking if the height of rect is greater than a line
             value = Widgets.HorizontalSlider(rightHalf.BottomPart(0.70f), bufferVal, leftValue, rightValue);
         }
+
+        public static void AddColorPickerButton(this Listing_Standard listing_Standard, string label, Color color, SelectionChange selectionChange, string buttonText = "Change")
+        {
+            listing_Standard.Gap(ListingStandardHelper.Gap);
+            Rect lineRect = listing_Standard.GetRect();
+
+            float textSize = Text.CalcSize(buttonText).x + 10f;
+            float rightSize = textSize + 5f + lineRect.height;
+            Rect rightPart = lineRect.RightPartPixels(textSize + 5f + lineRect.height);
+
+            // draw button leaving room for color rect in rightHalf rect (plus some padding)
+            if (Widgets.ButtonText(rightPart.LeftPartPixels(textSize), buttonText))
+                Find.WindowStack.Add(new ColorSelectDialog(buttonText, color, selectionChange));
+            GUI.color = color;
+            // draw square with color in rightHalf rect
+            GUI.DrawTexture(rightPart.RightPartPixels(rightPart.height), BaseContent.WhiteTex);
+            GUI.color = Color.white;
+
+            Rect leftPart = lineRect.LeftPartPixels(lineRect.width - rightSize);
+            Widgets.Label(leftPart, label);
+
+        }
     }
+
 }
