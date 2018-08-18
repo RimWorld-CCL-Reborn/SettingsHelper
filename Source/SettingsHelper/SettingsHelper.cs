@@ -15,6 +15,13 @@ namespace SettingsHelper
         public static float Gap { get => gap; set => gap = value; }
         public static float LineGap { get => lineGap; set => lineGap = value; }
 
+        public static Listing_Standard BeginListingStandard(this Rect rect, int columns = 1)
+        {
+            Listing_Standard listing_Standard = new Listing_Standard() { ColumnWidth = (rect.width / (float)(columns)) - ((float)(columns) * 5f) };
+            listing_Standard.Begin(rect);
+            return listing_Standard;
+        }
+
         public static void AddHorizontalLine(this Listing_Standard listing_Standard, float? gap = null)
         {
             listing_Standard.Gap(gap ?? lineGap);
@@ -191,7 +198,52 @@ namespace SettingsHelper
 
             Rect leftPart = lineRect.LeftPartPixels(lineRect.width - rightSize);
             Widgets.Label(leftPart, label);
+        }
 
+        // Verse.Listing_Standard
+        public static float Slider(this Listing_Standard listing_Standard, float val, float min, float max, string label = null, string leftAlignedLabel = null, string rightAlignedLabel = null, float roundTo = -1f, bool middleAlignment = false)
+        {
+            Rect rect = listing_Standard.GetRect(22f);
+            float result = Widgets.HorizontalSlider(rect, val, min, max, middleAlignment, label, leftAlignedLabel, rightAlignedLabel, roundTo);
+            listing_Standard.Gap(listing_Standard.verticalSpacing);
+            return result;
+        }
+
+    }
+
+    public static class SubSettingsWindowHelper
+    {
+        public delegate void WindowContentsHandler(Rect inRect);
+
+        public class SettingsWindow : Window
+        {
+            private WindowContentsHandler doWindowContents;
+
+            public SettingsWindow(WindowContentsHandler handler) : base()
+            {
+                this.doCloseButton = true;
+                this.doCloseX = true;
+                this.forcePause = true;
+                this.absorbInputAroundWindow = true;
+                this.doWindowContents = handler;
+            }
+
+            public override Vector2 InitialSize
+            {
+                get => new Vector2(900f, 700f);
+            }
+
+            public override void DoWindowContents(Rect inRect) => this.doWindowContents(inRect);
+        }
+
+        public static void AddSubSettingsButton(this Listing_Standard listing_Standard, string label, WindowContentsHandler handler)
+        {
+            listing_Standard.Gap(ListingStandardHelper.Gap);
+            Rect lineRect = listing_Standard.GetRect();
+
+            // TODO: button sizing...
+            if (Widgets.ButtonText(lineRect, label))
+                Find.WindowStack.Add(new SettingsWindow(handler));
         }
     }
 
