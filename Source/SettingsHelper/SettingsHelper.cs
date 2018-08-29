@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Verse;
 using UnityEngine;
 using ColorPicker.Dialog;
@@ -167,7 +168,7 @@ namespace SettingsHelper
             listing_Standard.CheckboxLabeled(label, ref settingsValue);
         }
 
-        public static void AddLabeledSlider(this Listing_Standard listing_Standard, string label, ref float value, float leftValue, float rightValue)
+        public static void AddLabeledSlider(this Listing_Standard listing_Standard, string label, ref float value, float leftValue, float rightValue, string leftAlignedLabel = null, string rightAlignedLabel = null, float roundTo = -1f, bool middleAlignment = false)
         {
             listing_Standard.Gap(Gap);
             listing_Standard.LineRectSpilter(out Rect leftHalf, out Rect rightHalf);
@@ -176,7 +177,7 @@ namespace SettingsHelper
 
             float bufferVal = value;
             // NOTE: this BottomPart will probably need some reworking if the height of rect is greater than a line
-            value = Widgets.HorizontalSlider(rightHalf.BottomPart(0.70f), bufferVal, leftValue, rightValue);
+            value = Widgets.HorizontalSlider(rightHalf.BottomPart(0.70f), bufferVal, leftValue, rightValue, middleAlignment, null, leftAlignedLabel, rightAlignedLabel, roundTo);
         }
 
         public static void AddColorPickerButton(this Listing_Standard listing_Standard, string label, Color color, SelectionChange selectionChange, string buttonText = "Change")
@@ -207,6 +208,23 @@ namespace SettingsHelper
             float result = Widgets.HorizontalSlider(rect, val, min, max, middleAlignment, label, leftAlignedLabel, rightAlignedLabel, roundTo);
             listing_Standard.Gap(listing_Standard.verticalSpacing);
             return result;
+        }
+
+        public static void AddLabeledSlider<T>(this Listing_Standard listing_Standard, string label, ref T value) where T : Enum
+        {
+            Enum enu = value as Enum;
+
+            //listing_Standard.Gap(Gap);
+            listing_Standard.Gap(10);
+            listing_Standard.LineRectSpilter(out Rect leftHalf, out Rect rightHalf);
+
+            Widgets.Label(leftHalf, label);
+
+            float bufferVal = Convert.ToInt32(enu);
+            // NOTE: this BottomPart will probably need some reworking if the height of rect is greater than a line
+            float tempVal = Widgets.HorizontalSlider(rightHalf.BottomPart(0.70f), bufferVal, 0f, Enum.GetValues(typeof(T)).Length - 1, true, Enum.GetName(typeof(T), value), roundTo: 1);
+
+            value = (T)Enum.ToObject(typeof(T), (int)tempVal);
         }
 
     }
