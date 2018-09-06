@@ -17,25 +17,12 @@ namespace ColorPicker.Dialog
             this.IsModified = false;
         }
 
-        public void Deselect()
-        {
-            this.SelectedIndex = -1;
-        }
+        public void Deselect() => this.SelectedIndex = -1;
+        public bool HasSelected() => this.SelectedIndex != -1;
+        public bool IsSelected(int i) => this.SelectedIndex == i;
+        public void SetSelected(int i) => this.SelectedIndex = i;
 
-        public Color GetSelectedColor()
-        {
-            return this.Colors[this.SelectedIndex];
-        }
-
-        public bool HasSelected()
-        {
-            return this.SelectedIndex != -1;
-        }
-
-        public bool IsSelected(int i)
-        {
-            return this.SelectedIndex == i;
-        }
+        public Color GetSelectedColor() => this.Colors[this.SelectedIndex];
 
         public void SetColor(int i, Color c)
         {
@@ -46,11 +33,6 @@ namespace ColorPicker.Dialog
             }
         }
 
-        public void SetSelected(int i)
-        {
-            this.SelectedIndex = i;
-        }
-
         internal void SetSelectedColor(Color c)
         {
             this.Colors[this.SelectedIndex] = c;
@@ -59,14 +41,8 @@ namespace ColorPicker.Dialog
 
         public Color this[int i]
         {
-            get
-            {
-                return this.Colors[i];
-            }
-            set
-            {
-                this.SetColor(i, value);
-            }
+            get => this.Colors[i];
+            set => this.SetColor(i, value);
         }
     }
 }

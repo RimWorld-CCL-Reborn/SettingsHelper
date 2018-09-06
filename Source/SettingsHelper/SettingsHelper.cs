@@ -235,7 +235,7 @@ namespace SettingsHelper
 
         public class SettingsWindow : Window
         {
-            private WindowContentsHandler doWindowContents;
+            private readonly WindowContentsHandler doWindowContents;
 
             public SettingsWindow(WindowContentsHandler handler) : base()
             {
