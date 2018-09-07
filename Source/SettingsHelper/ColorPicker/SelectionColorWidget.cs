@@ -15,6 +15,7 @@ namespace ColorPicker.Dialog
         public string rBuffer;
         public string gBuffer;
         public string bBuffer;
+        public string aBuffer;
 
         public Color SelectedColor
         {
@@ -49,6 +50,7 @@ namespace ColorPicker.Dialog
             this.rBuffer = this.ColorConverter(this.selectedColor.r).ToString();
             this.gBuffer = this.ColorConverter(this.selectedColor.g).ToString();
             this.bBuffer = this.ColorConverter(this.selectedColor.b).ToString();
+            this.aBuffer = this.ColorConverter(this.selectedColor.a).ToString();
         }
 
         private int ColorConverter(float f) => (int)(f * 255.999f);

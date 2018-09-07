@@ -116,26 +116,28 @@ namespace ColorPicker.Dialog
                 colorChanged = true;
 
             GUI.color = rgbColor;
-            GUI.DrawTexture(new Rect(156f, 1f, colorPresetTexture.width, colorPresetTexture.height), BaseContent.WhiteTex);
+            Rect colorRect = new Rect(156f, 1f, colorPresetTexture.width, colorPresetTexture.height);
+            if (allowAlpha) colorRect.x += 52f;
+            GUI.DrawTexture(colorRect, BaseContent.WhiteTex);
             GUI.color = Color.white;
-
-            // TODO: fix alpha... 
 
             string aText = "";
             if (allowAlpha)
             {
                 GUI.Label(new Rect(156f, 0f, 10f, 20f), "A");
                 aText = GUI.TextField(new Rect(168f, 1f, 30f, 20f), ((int)(rgbColor.a*255)).ToString(), 3);
+                if (aText?.Length > 0 && bText != this.selectionColorWidget.aBuffer)
+                    colorChanged = true;
             }
             GUI.EndGroup();
 
-            if (allowAlpha)
+            /*if (allowAlpha)
             {
                 GUI.BeginGroup(new Rect(0, colorPickerRect.height + 50f, width, 30f));
                 GUI.Label(new Rect(0, 0, 75, 40), "ReColorStockpile.Alpha".Translate());
                 rgbColor.a = Widgets.HorizontalSlider(new Rect(90, 0, 150, 20), rgbColor.a, 0, 1);
                 GUI.EndGroup();
-            }
+            }*/
 
             // Handle presets.
             GUI.BeginGroup(new Rect(0, colorPickerRect.height + 130, width, 120));
@@ -174,7 +176,7 @@ namespace ColorPicker.Dialog
 
             if (!skipRGB && colorChanged)
             {
-                selectionColorWidget.SelectedColor = new Color(ColorConvert(rText), ColorConvert(gText), ColorConvert(bText));
+                selectionColorWidget.SelectedColor = new Color(ColorConvert(rText), ColorConvert(gText), ColorConvert(bText), ColorConvert(aText));
             }
 
         }
