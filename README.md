@@ -12,7 +12,6 @@ This helper is used to simplify working with settings GUIs. Extends `Listing_Sta
 
 ## Improvements
 - Need more/better default values, parameters
-- Color picker needs UI improvements
 - Radio boxes and other lists need more helpers
 
 ## Notes
@@ -20,4 +19,5 @@ This helper is used to simplify working with settings GUIs. Extends `Listing_Sta
 
 ## Acknowledgements
 - Erdelf for the original examples and continued suggestions towards documentation.
-- KiameV for [ColorPicker](https://github.com/KiameV/rimworld-recolorzones).
+- KiameV for original [ColorPicker](https://github.com/KiameV/rimworld-recolorzones).
+- Fluffy for new [ColourPicker](https://github.com/FluffierThanThou/ColourPicker)

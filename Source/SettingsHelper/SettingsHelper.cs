@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Verse;
 using UnityEngine;
-using ColorPicker.Dialog;
+using ColourPicker;
 
 namespace SettingsHelper
 {
@@ -180,7 +180,7 @@ namespace SettingsHelper
             value = Widgets.HorizontalSlider(rightHalf.BottomPart(0.70f), bufferVal, leftValue, rightValue, middleAlignment, null, leftAlignedLabel, rightAlignedLabel, roundTo);
         }
 
-        public static void AddColorPickerButton(this Listing_Standard listing_Standard, string label, Color color, SelectionChange selectionChange, string buttonText = "Change")
+        public static void AddColorPickerButton(this Listing_Standard listing_Standard, string label, Color color, Action<Color> callback, string buttonText = "Change")
         {
             listing_Standard.Gap(ListingStandardHelper.Gap);
             Rect lineRect = listing_Standard.GetRect();
@@ -191,7 +191,8 @@ namespace SettingsHelper
 
             // draw button leaving room for color rect in rightHalf rect (plus some padding)
             if (Widgets.ButtonText(rightPart.LeftPartPixels(textSize), buttonText))
-                Find.WindowStack.Add(new ColorSelectDialog(buttonText, color, selectionChange));
+                //Find.WindowStack.Add(new ColorSelectDialog(buttonText, color, selectionChange));
+                Find.WindowStack.Add(new Dialog_ColourPicker(color, callback));
             GUI.color = color;
             // draw square with color in rightHalf rect
             GUI.DrawTexture(rightPart.RightPartPixels(rightPart.height), BaseContent.WhiteTex);
@@ -199,6 +200,11 @@ namespace SettingsHelper
 
             Rect leftPart = lineRect.LeftPartPixels(lineRect.width - rightSize);
             Widgets.Label(leftPart, label);
+        }
+
+        public static void AddColorPickerButton(this Listing_Standard listing_Standard, string label, Color color, String fieldName, object colorContainer, string buttonText = "Change")
+        {
+            ListingStandardHelper.AddColorPickerButton(listing_Standard, label, color, (Color c) => colorContainer.GetType().GetField(fieldName).SetValue(colorContainer, color), buttonText);
         }
 
         // Verse.Listing_Standard
