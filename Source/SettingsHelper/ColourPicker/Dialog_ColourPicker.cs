@@ -458,16 +458,8 @@ namespace ColourPicker
             return false;
         }
 
-        public static bool first;
         public override void DoWindowContents( Rect inRect )
         {
-            Log.Message("DoWindowContents");
-            if ( first )
-            {
-                Log.Message( InitialSize.ToString() );
-                Log.Message( windowRect.ToString() );
-            }
-
             // set up rects
             Rect pickerRect = new Rect(inRect.xMin, inRect.yMin, _pickerSize, _pickerSize);
             Rect hueRect = new Rect(pickerRect.xMax + _margin, inRect.yMin, _sliderWidth, _pickerSize);
