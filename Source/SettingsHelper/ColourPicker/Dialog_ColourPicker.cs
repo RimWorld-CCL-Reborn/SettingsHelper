@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Verse;
-using RimWorld;
 using UnityEngine;
 using System.Globalization;
 
@@ -465,6 +461,7 @@ namespace ColourPicker
         public static bool first;
         public override void DoWindowContents( Rect inRect )
         {
+            Log.Message("DoWindowContents");
             if ( first )
             {
                 Log.Message( InitialSize.ToString() );
