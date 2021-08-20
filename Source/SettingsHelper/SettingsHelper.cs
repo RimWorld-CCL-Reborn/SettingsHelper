@@ -191,7 +191,6 @@ namespace SettingsHelper
 
             // draw button leaving room for color rect in rightHalf rect (plus some padding)
             if (Widgets.ButtonText(rightPart.LeftPartPixels(textSize), buttonText))
-                //Find.WindowStack.Add(new ColorSelectDialog(buttonText, color, selectionChange));
                 Find.WindowStack.Add(new Dialog_ColourPicker(color, callback));
             GUI.color = color;
             // draw square with color in rightHalf rect
